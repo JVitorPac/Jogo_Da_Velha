@@ -1,6 +1,7 @@
 package Uninter;
 
 import java.util.Scanner;
+import java.util.Random;
 
 public class Jogo {
 
@@ -11,50 +12,54 @@ public class Jogo {
 		Tabuleiro tab = new Tabuleiro();
 		Jogador jogador = new Jogador();
 		teclado = new Scanner(System.in);
+		Random sortear = new Random();
 		
 		System.out.println("Bem Vindo ao Jogo da Velha!");
 		System.out.println();
 		System.out.println("Escolha a dificuldade do computador 1, 2 ou 3:");
 
-		int opcao = teclado.nextInt();
+		int dificuldade = teclado.nextInt();
 		
 		Computador comp = null;
 		
-		while(comp == null) {
-		if(opcao==1) {
+		while(comp == null) { // Instanciação do computador de acorodo com a escolha do jogador
+		if(dificuldade == 1) {
 			comp= new ComputadorA();
 		}
-		else if(opcao==2) {
+		else if(dificuldade == 2) {
 			comp= new ComputadorB();
 		}
-		else if(opcao==3) {
+		else if(dificuldade == 3) {
 			comp= new ComputadorC();
 		}
 		else {
 			System.out.println("Dificuldade Inválida!");
 			System.out.println();
 			System.out.println("Escolha a dificuldade do computador 1, 2 ou 3:");
-			opcao = teclado.nextInt();
+			dificuldade = teclado.nextInt();
 		}
 		}
 		
-		int vez = 1;
+		int vez = sortear.nextInt(2) + 1; // Sorteia quam começa o jogo
+		
 		tab.visualizar();
 		
 		while(tab.situacao() == 0) {
 			
-			if(vez== 1 ) { // Jogador
+			if(vez == 1 ) { // Jogador
 				jogador.jogar(tab);
 				vez=2;
 			}
-			else if(vez== 2 ) { // Computador
+			else if(vez == 2 ) { // Computador
 				System.out.println("Jogada Computador");
 				comp.jogar(tab);
-				vez=1;
+				vez = 1;
 			}
 			tab.visualizar();
 			System.out.println();
 			tab.ganhador();
 		}
+		if(tab.situacao() == 2)
+			System.err.println("Jogo empatado, deu velha!");
 	}
 }
